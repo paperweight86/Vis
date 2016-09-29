@@ -1,0 +1,5 @@
+*.tlog
+.vs/Vis/v14/.suo
+*.idb
+*.log
+tmp/x64/Debug/vis_gl.obj

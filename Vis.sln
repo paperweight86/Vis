@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vis", "Vis.vcxproj", "{91491C4B-0646-44C9-AFDA-C8CBA3DE0632}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ruin", "..\Ruin\Ruin.vcxproj", "{DF216C69-E283-44E3-9680-DA80E4241D63}"
+	ProjectSection(ProjectDependencies) = postProject
+		{91491C4B-0646-44C9-AFDA-C8CBA3DE0632} = {91491C4B-0646-44C9-AFDA-C8CBA3DE0632}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tat", "..\Tat\tat.vcxproj", "{0245D2C3-DD86-43C4-8440-18611F37C620}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{91491C4B-0646-44C9-AFDA-C8CBA3DE0632}.Debug|x64.ActiveCfg = Debug|x64
+		{91491C4B-0646-44C9-AFDA-C8CBA3DE0632}.Debug|x64.Build.0 = Debug|x64
+		{91491C4B-0646-44C9-AFDA-C8CBA3DE0632}.Release|x64.ActiveCfg = Release|x64
+		{91491C4B-0646-44C9-AFDA-C8CBA3DE0632}.Release|x64.Build.0 = Release|x64
+		{DF216C69-E283-44E3-9680-DA80E4241D63}.Debug|x64.ActiveCfg = Debug|x64
+		{DF216C69-E283-44E3-9680-DA80E4241D63}.Debug|x64.Build.0 = Debug|x64
+		{DF216C69-E283-44E3-9680-DA80E4241D63}.Release|x64.ActiveCfg = Release|x64
+		{DF216C69-E283-44E3-9680-DA80E4241D63}.Release|x64.Build.0 = Release|x64
+		{0245D2C3-DD86-43C4-8440-18611F37C620}.Debug|x64.ActiveCfg = Debug|x64
+		{0245D2C3-DD86-43C4-8440-18611F37C620}.Debug|x64.Build.0 = Debug|x64
+		{0245D2C3-DD86-43C4-8440-18611F37C620}.Release|x64.ActiveCfg = Release|x64
+		{0245D2C3-DD86-43C4-8440-18611F37C620}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
