@@ -3,3 +3,9 @@
 *.idb
 *.log
 tmp/x64/Debug/vis_gl.obj
+*.obj
+tmp/x64/Release/vc140.pdb
+*.pdb
+*.sdf
+*.sdf
+Vis.sdf
