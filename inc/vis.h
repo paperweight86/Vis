@@ -42,4 +42,6 @@ namespace vis
 	VIS_DEF bool get_program_variable_id(uti::u32 program_id, uti::i32* variable_id, uti::cstr name);
 
 	VIS_DEF void set_program_variable(uti::i32 variable_id, const uti::float44& matrix);
+
+	VIS_DEF void create_vertex_buffer(const float* positions, uti::u32 num_positions, uti::u32* variable_id);
 }

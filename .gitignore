@@ -9,3 +9,5 @@ tmp/x64/Release/vc140.pdb
 *.sdf
 *.sdf
 Vis.sdf
+Vis.sdf
+*.sdf
