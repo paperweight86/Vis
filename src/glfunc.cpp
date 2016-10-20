@@ -8,6 +8,7 @@
 
 #include "..\gl\glfunc.h"
 
+// OpenGL 2+
 DEF_GL_FUNC_SIG(glGenVertexArrays);
 DEF_GL_FUNC_SIG(glBindVertexArray);
 DEF_GL_FUNC_SIG(glGenBuffers);
@@ -33,6 +34,13 @@ DEF_GL_FUNC_SIG(glGetUniformLocation);
 DEF_GL_FUNC_SIG(glUniformMatrix4fv);
 DEF_GL_FUNC_SIG(glDeleteProgram);
 
+// OpenGL 3+
+DEF_GL_FUNC_SIG(glTexImage2DMultisample);
+DEF_GL_FUNC_SIG(glGenFramebuffers);
+DEF_GL_FUNC_SIG(glBindFramebuffer);
+DEF_GL_FUNC_SIG(glFramebufferTexture2D);
+DEF_GL_FUNC_SIG(glCheckFramebufferStatus);
+DEF_GL_FUNC_SIG(glBlitFramebuffer);
 
 void* vis::load_gl_func(const char *name, uti::ptr module)
 {
@@ -48,6 +56,7 @@ void* vis::load_gl_func(const char *name, uti::ptr module)
 
 void vis::load_gl_functions(uti::ptr module)
 {
+	//OpenGL 2+
 	LOAD_GL_FUNC(glGenVertexArrays);
 	LOAD_GL_FUNC(glBindVertexArray);
 	LOAD_GL_FUNC(glGenBuffers);
@@ -72,4 +81,12 @@ void vis::load_gl_functions(uti::ptr module)
 	LOAD_GL_FUNC(glGetUniformLocation);
 	LOAD_GL_FUNC(glUniformMatrix4fv);
 	LOAD_GL_FUNC(glDeleteProgram);
+
+	// OpenGL 3+
+	LOAD_GL_FUNC(glTexImage2DMultisample);
+	LOAD_GL_FUNC(glGenFramebuffers);
+	LOAD_GL_FUNC(glBindFramebuffer);
+	LOAD_GL_FUNC(glFramebufferTexture2D);
+	LOAD_GL_FUNC(glCheckFramebufferStatus);
+	LOAD_GL_FUNC(glBlitFramebuffer);
 }

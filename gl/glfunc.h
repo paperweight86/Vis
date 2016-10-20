@@ -5,6 +5,7 @@
 #define DEF_GL_FUNC_SIG(FUNCTIONNAME, RETURNTYPE, ...) typedef RETURNTYPE FUNCTIONNAME##_Signature(__VA_ARGS__); VIS_DEF extern FUNCTIONNAME##_Signature* FUNCTIONNAME;
 #define LOAD_GL_FUNC(FUNCTIONNAME) FUNCTIONNAME = (FUNCTIONNAME##_Signature*)load_gl_func( #FUNCTIONNAME, module)
 
+// OpenGL2+
 DEF_GL_FUNC_SIG(glGenVertexArrays, void, GLsizei n, GLuint *arrays);
 DEF_GL_FUNC_SIG(glBindVertexArray, void, GLuint arr);
 DEF_GL_FUNC_SIG(glGenBuffers, void, GLsizei n, GLuint * buffers);
@@ -29,6 +30,42 @@ DEF_GL_FUNC_SIG(glUseProgram, void, GLuint program);
 DEF_GL_FUNC_SIG(glGetUniformLocation, GLint, GLuint program, const GLchar* name);
 DEF_GL_FUNC_SIG(glUniformMatrix4fv, void, GLint location, GLsizei count, GLboolean transpose, const GLfloat* value);
 DEF_GL_FUNC_SIG(glDeleteProgram, void, GLuint  program);
+
+// OpenGL3+
+DEF_GL_FUNC_SIG(glTexImage2DMultisample, void, 
+				GLenum target,
+				GLsizei samples,
+				GLint internalformat,
+				GLsizei width,
+				GLsizei height,
+				GLboolean fixedsamplelocations);
+DEF_GL_FUNC_SIG(glGenFramebuffers, void,
+				GLsizei n,
+				GLuint *ids);
+DEF_GL_FUNC_SIG(glBindFramebuffer, void,
+				GLenum target,
+				GLuint framebuffer);
+DEF_GL_FUNC_SIG(glFramebufferTexture2D, void, 
+				GLenum target,
+				GLenum attachment,
+				GLenum textarget,
+				GLuint texture,
+				GLint level);
+DEF_GL_FUNC_SIG(glCheckFramebufferStatus, GLenum, 
+				GLenum target);
+DEF_GL_FUNC_SIG(glBlitFramebuffer, void,
+				GLint srcX0,
+				GLint srcY0,
+				GLint srcX1,
+				GLint srcY1,
+				GLint dstX0,
+				GLint dstY0,
+				GLint dstX1,
+				GLint dstY1,
+				GLbitfield mask,
+				GLenum filter);
+
+
 
 
 namespace vis
