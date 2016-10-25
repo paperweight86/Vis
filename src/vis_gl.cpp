@@ -129,9 +129,16 @@ void vis::set_program_variable(uti::i32 variable_id, const uti::float44& matrix)
 	glUniformMatrix4fv(variable_id, 1, GL_FALSE, matrix.m);
 }
 
-void vis::create_vertex_buffer(const float* positions, uti::u32 num_positions, uti::u32* variable_id)
+void vis::create_vertex_buffer(const float* elements, uti::u32 num_elements, uti::u32* vbuffer_id)
 {
-	glGenBuffers(1, variable_id);
-	glBindBuffer(GL_ARRAY_BUFFER, *variable_id);
-	glBufferData(GL_ARRAY_BUFFER, num_positions*sizeof(float), positions, GL_STATIC_DRAW);
+	glGenBuffers(1, vbuffer_id);
+	glBindBuffer(GL_ARRAY_BUFFER, *vbuffer_id);
+	glBufferData(GL_ARRAY_BUFFER, num_elements*sizeof(float), elements, GL_STATIC_DRAW);
+}
+
+void vis::create_index_buffer(const uti::u32* elements, uti::u32 num_elements, uti::u32* ibuffer_id)
+{
+	glGenBuffers(1, ibuffer_id);
+	glBindBuffer(GL_ARRAY_BUFFER, *ibuffer_id);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, num_elements*sizeof(uti::u32), elements, GL_STATIC_DRAW);
 }
