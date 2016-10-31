@@ -139,6 +139,6 @@ void vis::create_vertex_buffer(const float* elements, uti::u32 num_elements, uti
 void vis::create_index_buffer(const uti::u32* elements, uti::u32 num_elements, uti::u32* ibuffer_id)
 {
 	glGenBuffers(1, ibuffer_id);
-	glBindBuffer(GL_ARRAY_BUFFER, *ibuffer_id);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *ibuffer_id);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, num_elements*sizeof(uti::u32), elements, GL_STATIC_DRAW);
 }
