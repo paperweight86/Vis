@@ -87,7 +87,7 @@ void vis::get_shader_errors(uti::u32 shader_id, char* shader_error_buffer, uti::
 bool vis::create_linked_shader_program( uti::u32* shader_ids, uti::u32 num_shader_ids, uti::u32* program_id, uti::u32* errors_length)
 {
 	*program_id = glCreateProgram();
-	for (int i = 0; i < num_shader_ids; ++i)
+	for (uti::u32 i = 0; i < num_shader_ids; ++i)
 		glAttachShader(*program_id, shader_ids[i]);
 	glLinkProgram(*program_id);
 
@@ -96,7 +96,7 @@ bool vis::create_linked_shader_program( uti::u32* shader_ids, uti::u32 num_shade
 	glGetProgramiv(*program_id, GL_LINK_STATUS,	   &result);
 	glGetProgramiv(*program_id, GL_INFO_LOG_LENGTH, (GLint*)errors_length);
 
-	for (int i = 0; i < num_shader_ids; ++i)
+	for (uti::u32 i = 0; i < num_shader_ids; ++i)
 		glDetachShader(*program_id, shader_ids[i]);
 
 	return result != GL_FALSE;
