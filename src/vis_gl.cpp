@@ -129,6 +129,11 @@ void vis::set_program_variable(uti::i32 variable_id, const uti::float44& matrix)
 	glUniformMatrix4fv(variable_id, 1, GL_FALSE, matrix.m);
 }
 
+void vis::set_program_variable(uti::i32 variable_id, const uti::i32& value)
+{
+	glUniform1i(variable_id, value);
+}
+
 void vis::create_vertex_buffer(const float* elements, uti::u32 num_elements, uti::u32* vbuffer_id)
 {
 	glGenBuffers(1, vbuffer_id);

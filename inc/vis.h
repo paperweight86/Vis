@@ -43,6 +43,8 @@ namespace vis
 
 	VIS_DEF void set_program_variable(uti::i32 variable_id, const uti::float44& matrix);
 
+	VIS_DEF void set_program_variable(uti::i32 variable_id, const uti::i32& texture);
+
 	VIS_DEF void create_vertex_buffer(const float* elements, uti::u32 num_elements, uti::u32* vbuffer_id);
 
 	VIS_DEF void create_index_buffer(const uti::u32* elements, uti::u32 num_elements, uti::u32* ibuffer_id);
