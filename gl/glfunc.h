@@ -67,6 +67,9 @@ DEF_GL_FUNC_SIG(glBlitFramebuffer, void,
 				GLint dstY1,
 				GLbitfield mask,
 				GLenum filter);
+// OpenGL4
+DEF_GL_FUNC_SIG(glGenerateMipmap, void, GLenum target);
+
 
 
 
