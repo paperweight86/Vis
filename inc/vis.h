@@ -48,4 +48,6 @@ namespace vis
 	VIS_DEF void create_vertex_buffer(const float* elements, uti::u32 num_elements, uti::u32* vbuffer_id);
 
 	VIS_DEF void create_index_buffer(const uti::u32* elements, uti::u32 num_elements, uti::u32* ibuffer_id);
+
+	VIS_DEF bool load_shader_program(const char* vs_path, const char* ps_path, uti::u32* program_id);
 }

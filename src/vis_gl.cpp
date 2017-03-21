@@ -4,6 +4,8 @@
 
 #include "tat.h"
 #include "gel.h"
+#include "file_system.h"
+#include "log.h"
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -146,4 +148,104 @@ void vis::create_index_buffer(const uti::u32* elements, uti::u32 num_elements, u
 	glGenBuffers(1, ibuffer_id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *ibuffer_id);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, num_elements*sizeof(uti::u32), elements, GL_STATIC_DRAW);
+}
+
+bool vis::load_shader_program(const char* vs_path, const char* ps_path, uti::u32* program_id)
+{
+	UTI_LOG_PREFIX_SCOPE("vis");
+
+	char* ptr_ps_file_buffer = nullptr;
+	uti::u64 ps_file_len = 0;
+	if (!uti::file_load_all_lines(ps_path, &ptr_ps_file_buffer, &ps_file_len))
+	{
+		uti::log::err_out("[vis][load_shader_program] Failed to load pixel shader \"%s\".", ps_path);
+		if (ptr_ps_file_buffer != nullptr)
+		{
+			delete[] ptr_ps_file_buffer;
+			ptr_ps_file_buffer = nullptr;
+		}
+	}
+
+	char* ptr_vs_file_buffer = nullptr;
+	uti::u64 vs_file_len = 0;
+	if (!uti::file_load_all_lines(vs_path, &ptr_vs_file_buffer, &vs_file_len))
+	{
+		uti::log::err_out("Failed to load vertex shader \"%s\".", vs_path);
+		if (ptr_vs_file_buffer != nullptr)
+		{
+			delete[] ptr_vs_file_buffer;
+			ptr_vs_file_buffer = nullptr;
+		}
+	}
+
+	bool got_shader_errors = false;
+
+	uti::u32 pixel_shader = u32_max;
+	uti::u32 pixel_shader_errors_len = 0;
+	if (!vis::create_compiled_pixel_shader(ptr_ps_file_buffer, &pixel_shader, &pixel_shader_errors_len))
+	{
+		char* pixel_shader_errors = new char[pixel_shader_errors_len];
+		pixel_shader_errors[pixel_shader_errors_len - 1] = 0;
+		vis::get_shader_errors(pixel_shader, pixel_shader_errors, pixel_shader_errors_len);
+		uti::log::err_out("Error compiling pixel shader\r\n");
+		uti::log::err_out(pixel_shader_errors);
+		uti::log::err_out("\r\n");
+		delete[] pixel_shader_errors;
+		got_shader_errors = true;
+	}
+
+	uti::u32 vertex_shader = u32_max;
+	uti::u32 vertex_shader_errors_len = 0;
+	if (!vis::create_compiled_vertex_shader(ptr_vs_file_buffer, &vertex_shader, &vertex_shader_errors_len))
+	{
+		char* vertex_shader_errors = new char[vertex_shader_errors_len];
+		vertex_shader_errors[vertex_shader_errors_len - 1] = 0;
+		vis::get_shader_errors(vertex_shader, vertex_shader_errors, vertex_shader_errors_len);
+		uti::log::err_out("Error compiling vertex shader\r\n");
+		uti::log::err_out(vertex_shader_errors);
+		uti::log::err_out("\r\n");
+		delete[] vertex_shader_errors;
+		got_shader_errors = true;
+	}
+
+	uti::u32 new_shader_program = u32_max;
+	uti::u32 shader_ids[] = { pixel_shader, vertex_shader };
+	uti::u32 shader_program_errors_len = 0;
+	if (!vis::create_linked_shader_program(shader_ids, ARRAYSIZE(shader_ids), &new_shader_program, &shader_program_errors_len))
+	{
+		char* shader_program_errors = new char[shader_program_errors_len];
+		shader_program_errors[shader_program_errors_len - 1] = 0;
+		vis::get_shader_errors(new_shader_program, shader_program_errors, shader_program_errors_len);
+		uti::log::err_out("Error linking shader\r\n");
+		uti::log::err_out(shader_program_errors);
+		uti::log::err_out("\r\n");
+		delete[] shader_program_errors;
+	}
+
+	if (got_shader_errors)
+	{
+		vis::destroy_program(new_shader_program);
+	}
+	else
+	{
+		vis::destroy_program(*program_id);
+		*program_id = new_shader_program;
+	}
+
+	vis::destroy_shader(pixel_shader);
+	vis::destroy_shader(vertex_shader);
+
+	if (ptr_ps_file_buffer != nullptr)
+	{
+		delete[] ptr_ps_file_buffer;
+		ptr_ps_file_buffer = nullptr;
+	}
+
+	if (ptr_vs_file_buffer != nullptr)
+	{
+		delete[] ptr_vs_file_buffer;
+		ptr_vs_file_buffer = nullptr;
+	}
+
+	return !got_shader_errors;
 }
