@@ -35,6 +35,7 @@ DEF_GL_FUNC_SIG(glUniformMatrix4fv);
 DEF_GL_FUNC_SIG(glUniform1i);
 DEF_GL_FUNC_SIG(glDeleteProgram);
 DEF_GL_FUNC_SIG(glActiveTexture);
+DEF_GL_FUNC_SIG(glDeleteBuffers);
 
 // OpenGL 3
 DEF_GL_FUNC_SIG(glTexImage2DMultisample);
@@ -88,6 +89,7 @@ void vis::load_gl_functions(uti::ptr module)
 	LOAD_GL_FUNC(glUniform1i);
 	LOAD_GL_FUNC(glDeleteProgram);
 	LOAD_GL_FUNC(glActiveTexture);
+	LOAD_GL_FUNC(glDeleteBuffers);
 
 	// OpenGL 3
 	LOAD_GL_FUNC(glTexImage2DMultisample);

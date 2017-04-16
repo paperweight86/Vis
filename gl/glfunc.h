@@ -32,6 +32,7 @@ DEF_GL_FUNC_SIG(glUniformMatrix4fv, void, GLint location, GLsizei count, GLboole
 DEF_GL_FUNC_SIG(glUniform1i, void, GLint location, GLint v0);
 DEF_GL_FUNC_SIG(glDeleteProgram, void, GLuint  program);
 DEF_GL_FUNC_SIG(glActiveTexture, void, GLenum texture);
+DEF_GL_FUNC_SIG(glDeleteBuffers, void, GLsizei n, const GLuint* buffers);
 
 
 // OpenGL3+

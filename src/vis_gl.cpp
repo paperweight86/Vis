@@ -143,11 +143,21 @@ void vis::create_vertex_buffer(const float* elements, uti::u32 num_elements, uti
 	glBufferData(GL_ARRAY_BUFFER, num_elements*sizeof(float), elements, GL_STATIC_DRAW);
 }
 
+void vis::destroy_vertex_buffer(uti::u32* vbuffer_id)
+{
+	glDeleteBuffers(1, vbuffer_id);
+}
+
 void vis::create_index_buffer(const uti::u32* elements, uti::u32 num_elements, uti::u32* ibuffer_id)
 {
 	glGenBuffers(1, ibuffer_id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *ibuffer_id);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, num_elements*sizeof(uti::u32), elements, GL_STATIC_DRAW);
+}
+
+void vis::destroy_index_buffer(uti::u32* ibuffer_id)
+{
+	glDeleteBuffers(1, ibuffer_id);
 }
 
 bool vis::load_shader_program(const char* vs_path, const char* ps_path, uti::u32* program_id)
