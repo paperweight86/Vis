@@ -33,6 +33,7 @@ DEF_GL_FUNC_SIG(glUseProgram);
 DEF_GL_FUNC_SIG(glGetUniformLocation);
 DEF_GL_FUNC_SIG(glUniformMatrix4fv);
 DEF_GL_FUNC_SIG(glUniform1i);
+DEF_GL_FUNC_SIG(glUniform4fv);
 DEF_GL_FUNC_SIG(glDeleteProgram);
 DEF_GL_FUNC_SIG(glActiveTexture);
 DEF_GL_FUNC_SIG(glDeleteBuffers);
@@ -87,6 +88,7 @@ void vis::load_gl_functions(uti::ptr module)
 	LOAD_GL_FUNC(glGetUniformLocation);
 	LOAD_GL_FUNC(glUniformMatrix4fv);
 	LOAD_GL_FUNC(glUniform1i);
+	LOAD_GL_FUNC(glUniform4fv);
 	LOAD_GL_FUNC(glDeleteProgram);
 	LOAD_GL_FUNC(glActiveTexture);
 	LOAD_GL_FUNC(glDeleteBuffers);

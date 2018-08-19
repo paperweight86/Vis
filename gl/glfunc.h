@@ -30,6 +30,7 @@ DEF_GL_FUNC_SIG(glUseProgram, void, GLuint program);
 DEF_GL_FUNC_SIG(glGetUniformLocation, GLint, GLuint program, const GLchar* name);
 DEF_GL_FUNC_SIG(glUniformMatrix4fv, void, GLint location, GLsizei count, GLboolean transpose, const GLfloat* value);
 DEF_GL_FUNC_SIG(glUniform1i, void, GLint location, GLint v0);
+DEF_GL_FUNC_SIG(glUniform4fv, void, GLint location,	GLsizei count, const GLfloat* value);
 DEF_GL_FUNC_SIG(glDeleteProgram, void, GLuint  program);
 DEF_GL_FUNC_SIG(glActiveTexture, void, GLenum texture);
 DEF_GL_FUNC_SIG(glDeleteBuffers, void, GLsizei n, const GLuint* buffers);

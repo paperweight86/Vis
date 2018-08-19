@@ -136,6 +136,11 @@ void vis::set_program_variable(uti::i32 variable_id, const uti::i32& value)
 	glUniform1i(variable_id, value);
 }
 
+void vis::set_program_variable(uti::i32 variable_id, const uti::float4& value)
+{
+	glUniform4fv(variable_id, 4, (float*)&value);
+}
+
 void vis::create_vertex_buffer(const float* elements, uti::u32 num_elements, uti::u32* vbuffer_id)
 {
 	glGenBuffers(1, vbuffer_id);
