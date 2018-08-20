@@ -14,6 +14,21 @@
 #include "..\gl\glext.h"
 #include "..\gl\glfunc.h"
 
+#include "float4.h"
+
+GLenum g_gl_error;
+#if NDEBUG
+#define BREAK_IF_FAIL() (void)0
+#else
+#define BREAK_IF_FAIL() \
+g_gl_error = glGetError();\
+if( g_gl_error != GL_NO_ERROR ) \
+{\
+	uti::log::err_out("%s - GL Function Failed with %d", __FUNCTIONT__, g_gl_error);\
+	DebugBreak();\
+}
+#endif
+
 void vis::initialise(renderer* renderer, uti::ptr hwnd)
 {
 	assert(renderer != NULL);
@@ -90,7 +105,10 @@ bool vis::create_linked_shader_program( uti::u32* shader_ids, uti::u32 num_shade
 {
 	*program_id = glCreateProgram();
 	for (uti::u32 i = 0; i < num_shader_ids; ++i)
+	{
 		glAttachShader(*program_id, shader_ids[i]);
+		BREAK_IF_FAIL();
+	}
 	glLinkProgram(*program_id);
 
 	// Check
@@ -99,7 +117,10 @@ bool vis::create_linked_shader_program( uti::u32* shader_ids, uti::u32 num_shade
 	glGetProgramiv(*program_id, GL_INFO_LOG_LENGTH, (GLint*)errors_length);
 
 	for (uti::u32 i = 0; i < num_shader_ids; ++i)
+	{
 		glDetachShader(*program_id, shader_ids[i]);
+		BREAK_IF_FAIL();
+	}
 
 	return result != GL_FALSE;
 }
@@ -138,31 +159,44 @@ void vis::set_program_variable(uti::i32 variable_id, const uti::i32& value)
 
 void vis::set_program_variable(uti::i32 variable_id, const uti::float4& value)
 {
-	glUniform4fv(variable_id, 4, (float*)&value);
+	float value_array[4] = { 
+		uti::get_x(value), 
+		uti::get_y(value), 
+		uti::get_z(value), 
+		uti::get_h(value) };
+	glUniform4fv(variable_id, 1, (float*)&value_array[0]);
 }
 
 void vis::create_vertex_buffer(const float* elements, uti::u32 num_elements, uti::u32* vbuffer_id)
 {
 	glGenBuffers(1, vbuffer_id);
+	BREAK_IF_FAIL();
 	glBindBuffer(GL_ARRAY_BUFFER, *vbuffer_id);
+	BREAK_IF_FAIL();
 	glBufferData(GL_ARRAY_BUFFER, num_elements*sizeof(float), elements, GL_STATIC_DRAW);
+	BREAK_IF_FAIL();
 }
 
 void vis::destroy_vertex_buffer(uti::u32* vbuffer_id)
 {
 	glDeleteBuffers(1, vbuffer_id);
+	BREAK_IF_FAIL();
 }
 
 void vis::create_index_buffer(const uti::u32* elements, uti::u32 num_elements, uti::u32* ibuffer_id)
 {
 	glGenBuffers(1, ibuffer_id);
+	BREAK_IF_FAIL();
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *ibuffer_id);
+	BREAK_IF_FAIL();
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, num_elements*sizeof(uti::u32), elements, GL_STATIC_DRAW);
+	BREAK_IF_FAIL();
 }
 
 void vis::destroy_index_buffer(uti::u32* ibuffer_id)
 {
 	glDeleteBuffers(1, ibuffer_id);
+	BREAK_IF_FAIL();
 }
 
 bool vis::load_shader_program(const char* vs_path, const char* ps_path, uti::u32* program_id)

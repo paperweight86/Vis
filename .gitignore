@@ -17,3 +17,4 @@ Vis.sdf
 *.sdf
 Vis.sdf
 *.opendb
+tmp/x64/Debug/vis_gl.obj.enc
