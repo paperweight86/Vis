@@ -5,9 +5,12 @@
     <ClInclude Include="gl\wglext.h" />
     <ClInclude Include="gl\glext.h" />
     <ClInclude Include="gl\glfunc.h" />
+    <ClInclude Include="inc\vis_utils.h" />
+    <ClInclude Include="inc\vis_def.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\vis_gl.cpp" />
     <ClCompile Include="src\glfunc.cpp" />
+    <ClCompile Include="src\vis_gl_utils.cpp" />
   </ItemGroup>
 </Project>

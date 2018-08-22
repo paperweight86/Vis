@@ -89,10 +89,13 @@
     <ClInclude Include="gl\glext.h" />
     <ClInclude Include="gl\glfunc.h" />
     <ClInclude Include="gl\wglext.h" />
+    <ClInclude Include="inc\vis_def.h" />
+    <ClInclude Include="inc\vis_utils.h" />
     <ClInclude Include="inc\vis.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glfunc.cpp" />
+    <ClCompile Include="src\vis_gl_utils.cpp" />
     <ClCompile Include="src\vis_gl.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

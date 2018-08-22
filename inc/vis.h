@@ -2,11 +2,7 @@
 
 #include "types.h"
 
-#ifdef VIS_LIB
-#define VIS_DEF __declspec(dllexport)
-#else
-#define VIS_DEF __declspec(dllimport)
-#endif
+#include "vis_def.h"
 
 namespace vis
 {

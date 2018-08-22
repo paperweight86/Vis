@@ -67,31 +67,41 @@ void vis::shutdown(renderer* renderer)
 bool vis::create_compiled_vertex_shader( const char* shaderText, uti::u32* shader_id, uti::u32* errors_length )
 {
 	*shader_id = glCreateShader(GL_VERTEX_SHADER);
-
+	BREAK_IF_FAIL();
 	// Compile
 	glShaderSource(*shader_id, 1, &shaderText, NULL);
+	BREAK_IF_FAIL();
 	glCompileShader(*shader_id);
+	BREAK_IF_FAIL();
 
 	// Check 
 	GLint result = GL_FALSE;
 	glGetShaderiv(*shader_id, GL_COMPILE_STATUS, &result);
+	BREAK_IF_FAIL();
 	glGetShaderiv(*shader_id, GL_INFO_LOG_LENGTH, (GLint*)errors_length);
+	BREAK_IF_FAIL();
 
 	return result != GL_FALSE;
 }
 
 bool vis::create_compiled_pixel_shader(const char* shaderText, uti::u32* shader_id, uti::u32* errors_length)
 {
+	BREAK_IF_FAIL();
 	*shader_id = glCreateShader(GL_FRAGMENT_SHADER);
+	BREAK_IF_FAIL();
 
 	// Compile
 	glShaderSource(*shader_id, 1, &shaderText, NULL);
+	BREAK_IF_FAIL();
 	glCompileShader(*shader_id);
+	BREAK_IF_FAIL();
 
 	// Check 
 	GLint result = GL_FALSE;
 	glGetShaderiv(*shader_id, GL_COMPILE_STATUS, &result);
+	BREAK_IF_FAIL();
 	glGetShaderiv(*shader_id, GL_INFO_LOG_LENGTH, (GLint*)errors_length);
+	BREAK_IF_FAIL();
 
 	return result != GL_FALSE;
 }
@@ -99,11 +109,13 @@ bool vis::create_compiled_pixel_shader(const char* shaderText, uti::u32* shader_
 void vis::get_shader_errors(uti::u32 shader_id, char* shader_error_buffer, uti::u32 shader_error_buffer_len)
 {
 	glGetShaderInfoLog(shader_id, shader_error_buffer_len, NULL, shader_error_buffer);
+	BREAK_IF_FAIL();
 }
 
 bool vis::create_linked_shader_program( uti::u32* shader_ids, uti::u32 num_shader_ids, uti::u32* program_id, uti::u32* errors_length)
 {
 	*program_id = glCreateProgram();
+	BREAK_IF_FAIL();
 	for (uti::u32 i = 0; i < num_shader_ids; ++i)
 	{
 		glAttachShader(*program_id, shader_ids[i]);
@@ -114,7 +126,9 @@ bool vis::create_linked_shader_program( uti::u32* shader_ids, uti::u32 num_shade
 	// Check
 	GLint result = GL_FALSE;
 	glGetProgramiv(*program_id, GL_LINK_STATUS,	   &result);
+	BREAK_IF_FAIL();
 	glGetProgramiv(*program_id, GL_INFO_LOG_LENGTH, (GLint*)errors_length);
+	BREAK_IF_FAIL();
 
 	for (uti::u32 i = 0; i < num_shader_ids; ++i)
 	{
@@ -128,16 +142,19 @@ bool vis::create_linked_shader_program( uti::u32* shader_ids, uti::u32 num_shade
 void vis::get_program_errors(uti::u32 program_id, char* program_error_buffer, uti::u32 program_error_buffer_len)
 {
 	glGetProgramInfoLog(program_id, program_error_buffer_len, NULL, program_error_buffer);
+	BREAK_IF_FAIL();
 }
 
 void vis::destroy_shader(uti::u32 shader_id)
 {
 	glDeleteShader(shader_id);
+	BREAK_IF_FAIL();
 }
 
 void vis::destroy_program(uti::u32 program_id)
 {
 	glDeleteProgram(program_id);
+	BREAK_IF_FAIL();
 }
 
 bool vis::get_program_variable_id(uti::u32 program_id, uti::i32* variable_id, uti::cstr name)
@@ -169,6 +186,7 @@ void vis::set_program_variable(uti::i32 variable_id, const uti::float4& value)
 
 void vis::create_vertex_buffer(const float* elements, uti::u32 num_elements, uti::u32* vbuffer_id)
 {
+	glGetError();
 	glGenBuffers(1, vbuffer_id);
 	BREAK_IF_FAIL();
 	glBindBuffer(GL_ARRAY_BUFFER, *vbuffer_id);
@@ -236,6 +254,7 @@ bool vis::load_shader_program(const char* vs_path, const char* ps_path, uti::u32
 		char* pixel_shader_errors = new char[pixel_shader_errors_len];
 		pixel_shader_errors[pixel_shader_errors_len - 1] = 0;
 		vis::get_shader_errors(pixel_shader, pixel_shader_errors, pixel_shader_errors_len);
+		BREAK_IF_FAIL();
 		uti::log::err_out("Error compiling pixel shader\r\n");
 		uti::log::err_out(pixel_shader_errors);
 		uti::log::err_out("\r\n");
@@ -250,6 +269,7 @@ bool vis::load_shader_program(const char* vs_path, const char* ps_path, uti::u32
 		char* vertex_shader_errors = new char[vertex_shader_errors_len];
 		vertex_shader_errors[vertex_shader_errors_len - 1] = 0;
 		vis::get_shader_errors(vertex_shader, vertex_shader_errors, vertex_shader_errors_len);
+		BREAK_IF_FAIL();
 		uti::log::err_out("Error compiling vertex shader\r\n");
 		uti::log::err_out(vertex_shader_errors);
 		uti::log::err_out("\r\n");
@@ -265,6 +285,7 @@ bool vis::load_shader_program(const char* vs_path, const char* ps_path, uti::u32
 		char* shader_program_errors = new char[shader_program_errors_len];
 		shader_program_errors[shader_program_errors_len - 1] = 0;
 		vis::get_shader_errors(new_shader_program, shader_program_errors, shader_program_errors_len);
+		BREAK_IF_FAIL();
 		uti::log::err_out("Error linking shader\r\n");
 		uti::log::err_out(shader_program_errors);
 		uti::log::err_out("\r\n");
@@ -274,15 +295,22 @@ bool vis::load_shader_program(const char* vs_path, const char* ps_path, uti::u32
 	if (got_shader_errors)
 	{
 		vis::destroy_program(new_shader_program);
+		BREAK_IF_FAIL();
 	}
 	else
 	{
-		vis::destroy_program(*program_id);
+		if (*program_id != u32_max)
+		{
+			vis::destroy_program(*program_id);
+		}
+		BREAK_IF_FAIL();
 		*program_id = new_shader_program;
 	}
 
 	vis::destroy_shader(pixel_shader);
+	BREAK_IF_FAIL();
 	vis::destroy_shader(vertex_shader);
+	BREAK_IF_FAIL();
 
 	if (ptr_ps_file_buffer != nullptr)
 	{
