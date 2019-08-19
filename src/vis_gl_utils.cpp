@@ -2,15 +2,19 @@
 
 #include "vis_utils.h"
 
+#ifdef TAT_WINDOWS
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
+#endif
 
-#include <gl/GL.h>
-#include "..\gl\glext.h"
-#include "..\gl\glfunc.h"
+#include <GL/gl.h>
+#include "glext.h"
+#include "glfunc.h"
 
 #include "tat.h"
 #include "float4.h"
+
+#include <math.h>
 
 using namespace uti;
 

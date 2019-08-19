@@ -7,26 +7,38 @@
 #include "file_system.h"
 #include "log.h"
 
+#ifdef TAT_WINDOWS
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
+#endif
 
-#include <gl/GL.h>
-#include "..\gl\glext.h"
-#include "..\gl\glfunc.h"
+#include <GL/gl.h>
+#include "glext.h"
+#include "glfunc.h"
 
 #include "float4.h"
 
 GLenum g_gl_error;
 #if NDEBUG
-#define BREAK_IF_FAIL() (void)0
+	#define BREAK_IF_FAIL() (void)0
 #else
-#define BREAK_IF_FAIL() \
-g_gl_error = glGetError();\
-if( g_gl_error != GL_NO_ERROR ) \
-{\
-	uti::log::err_out("%s - GL Function Failed with %d", __FUNCTIONT__, g_gl_error);\
-	DebugBreak();\
-}
+	#ifdef TAT_WINDOWS
+		#define BREAK_IF_FAIL() \
+		g_gl_error = glGetError();\
+		if( g_gl_error != GL_NO_ERROR ) \
+		{\
+			uti::log::err_out("%s - GL Function Failed with %d", __FUNCTIONT__, g_gl_error);\
+			DebugBreak();\
+		}
+	#else
+		// TODO: [DanJ] We want to break on other platforms too
+		#define BREAK_IF_FAIL() \
+		g_gl_error = glGetError();\
+		if( g_gl_error != GL_NO_ERROR ) \
+		{\
+			uti::log::err_out("%s - GL Function Failed with %d", __FUNCTIONT__, g_gl_error);\
+		}
+	#endif // TAT_WINDOWS
 #endif
 
 void vis::initialise(renderer* renderer, uti::ptr hwnd)
@@ -37,7 +49,11 @@ void vis::initialise(renderer* renderer, uti::ptr hwnd)
 	uti::gel::set_gl_context(hwnd, context);
 
 	renderer->hwnd = hwnd;
+#ifdef TAT_WINDOWS
 	renderer->hdc = (uti::ptr)GetDC((HWND)hwnd);
+#else
+	renderer->hdc = (uti::ptr)nullptr;
+#endif // TAT_WINDOWS
 	renderer->context = context;
 
 	glClearColor(0.682f, 0.776f, 0.812f, 1.0f);
@@ -231,6 +247,7 @@ bool vis::load_shader_program(const char* vs_path, const char* ps_path, uti::u32
 			delete[] ptr_ps_file_buffer;
 			ptr_ps_file_buffer = nullptr;
 		}
+		return false;
 	}
 
 	char* ptr_vs_file_buffer = nullptr;
@@ -243,6 +260,7 @@ bool vis::load_shader_program(const char* vs_path, const char* ps_path, uti::u32
 			delete[] ptr_vs_file_buffer;
 			ptr_vs_file_buffer = nullptr;
 		}
+		return false;
 	}
 
 	bool got_shader_errors = false;
@@ -251,45 +269,66 @@ bool vis::load_shader_program(const char* vs_path, const char* ps_path, uti::u32
 	uti::u32 pixel_shader_errors_len = 0;
 	if (!vis::create_compiled_pixel_shader(ptr_ps_file_buffer, &pixel_shader, &pixel_shader_errors_len))
 	{
-		char* pixel_shader_errors = new char[pixel_shader_errors_len];
-		pixel_shader_errors[pixel_shader_errors_len - 1] = 0;
-		vis::get_shader_errors(pixel_shader, pixel_shader_errors, pixel_shader_errors_len);
-		BREAK_IF_FAIL();
-		uti::log::err_out("Error compiling pixel shader\r\n");
-		uti::log::err_out(pixel_shader_errors);
-		uti::log::err_out("\r\n");
-		delete[] pixel_shader_errors;
-		got_shader_errors = true;
+		if(pixel_shader_errors_len > 0)
+		{
+			char* pixel_shader_errors = new char[pixel_shader_errors_len];
+			pixel_shader_errors[pixel_shader_errors_len - 1] = 0;
+			vis::get_shader_errors(pixel_shader, pixel_shader_errors, pixel_shader_errors_len);
+			BREAK_IF_FAIL();
+			uti::log::err_out("Error compiling pixel shader\r\n");
+			uti::log::err_out(pixel_shader_errors);
+			uti::log::err_out("\r\n");
+			delete[] pixel_shader_errors;
+			got_shader_errors = true;
+		}
+		else
+		{
+			uti::log::err_out("Error compiling pixel shader - unable to read errors\r\n");
+		}
 	}
 
 	uti::u32 vertex_shader = u32_max;
 	uti::u32 vertex_shader_errors_len = 0;
 	if (!vis::create_compiled_vertex_shader(ptr_vs_file_buffer, &vertex_shader, &vertex_shader_errors_len))
 	{
-		char* vertex_shader_errors = new char[vertex_shader_errors_len];
-		vertex_shader_errors[vertex_shader_errors_len - 1] = 0;
-		vis::get_shader_errors(vertex_shader, vertex_shader_errors, vertex_shader_errors_len);
-		BREAK_IF_FAIL();
-		uti::log::err_out("Error compiling vertex shader\r\n");
-		uti::log::err_out(vertex_shader_errors);
-		uti::log::err_out("\r\n");
-		delete[] vertex_shader_errors;
-		got_shader_errors = true;
+		if(vertex_shader_errors_len > 0)
+		{
+			char* vertex_shader_errors = new char[vertex_shader_errors_len];
+			vertex_shader_errors[vertex_shader_errors_len - 1] = 0;
+			vis::get_shader_errors(vertex_shader, vertex_shader_errors, vertex_shader_errors_len);
+			BREAK_IF_FAIL();
+			uti::log::err_out("Error compiling vertex shader\r\n");
+			uti::log::err_out(vertex_shader_errors);
+			uti::log::err_out("\r\n");
+			delete[] vertex_shader_errors;
+			got_shader_errors = true;
+		}
+		else
+		{
+			uti::log::err_out("Error compiling vertex shader - unable to read errors\r\n");
+		}
 	}
 
 	uti::u32 new_shader_program = u32_max;
 	uti::u32 shader_ids[] = { pixel_shader, vertex_shader };
 	uti::u32 shader_program_errors_len = 0;
-	if (!vis::create_linked_shader_program(shader_ids, ARRAYSIZE(shader_ids), &new_shader_program, &shader_program_errors_len))
+	if (!vis::create_linked_shader_program(shader_ids, uti::array_size(shader_ids), &new_shader_program, &shader_program_errors_len))
 	{
-		char* shader_program_errors = new char[shader_program_errors_len];
-		shader_program_errors[shader_program_errors_len - 1] = 0;
-		vis::get_shader_errors(new_shader_program, shader_program_errors, shader_program_errors_len);
-		BREAK_IF_FAIL();
-		uti::log::err_out("Error linking shader\r\n");
-		uti::log::err_out(shader_program_errors);
-		uti::log::err_out("\r\n");
-		delete[] shader_program_errors;
+		if(shader_program_errors_len > 0)
+		{
+			char* shader_program_errors = new char[shader_program_errors_len];
+			shader_program_errors[shader_program_errors_len - 1] = 0;
+			vis::get_shader_errors(new_shader_program, shader_program_errors, shader_program_errors_len);
+			BREAK_IF_FAIL();
+			uti::log::err_out("Error linking shader\r\n");
+			uti::log::err_out(shader_program_errors);
+			uti::log::err_out("\r\n");
+			delete[] shader_program_errors;
+		}
+		else
+		{
+			uti::log::err_out("Error linking shader - unable to read errors\r\n");
+		}
 	}
 
 	if (got_shader_errors)

@@ -1,12 +1,21 @@
 #include "types.h"
 
+#ifdef TAT_WINDOWS
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
-#include <gl\GL.h>
-#include <gl\GLU.h>
-#include "..\..\Vis\gl\glext.h"
+#endif // TAT_WINDOWS
 
-#include "..\gl\glfunc.h"
+#include <GL/gl.h>
+
+#ifdef TAT_WINDOWS
+#include <GL/glu.h>
+#else
+#include <GL/glx.h> 
+#include "dlfcn.h"
+#endif // TAT_WINDOWS
+
+#include "../gl/glext.h"
+#include "../gl/glfunc.h"
 
 // OpenGL 2
 DEF_GL_FUNC_SIG(glGenVertexArrays);
@@ -35,7 +44,7 @@ DEF_GL_FUNC_SIG(glUniformMatrix4fv);
 DEF_GL_FUNC_SIG(glUniform1i);
 DEF_GL_FUNC_SIG(glUniform4fv);
 DEF_GL_FUNC_SIG(glDeleteProgram);
-DEF_GL_FUNC_SIG(glActiveTexture);
+//DEF_GL_FUNC_SIG(glActiveTexture);
 DEF_GL_FUNC_SIG(glDeleteBuffers);
 
 // OpenGL 3
@@ -51,12 +60,20 @@ DEF_GL_FUNC_SIG(glGenerateMipmap);
 
 void* vis::load_gl_func(const char *name, uti::ptr module)
 {
+	#ifdef TAT_WINDOWS
 	void* p = wglGetProcAddress(name);
+	#else
+	void* p = (void*)glXGetProcAddress((GLubyte*)name);
+	#endif
 	if (p == 0 ||
 		(p == (void*)0x1) || (p == (void*)0x2) || (p == (void*)0x3) ||
 		(p == (void*)-1))
 	{
+		#ifdef TAT_WINDOWS
 		p = (void*)GetProcAddress((HMODULE)module, name);
+		#else
+		p = dlsym((void*)module, name);
+		#endif
 	}
 	return p;
 }
@@ -90,7 +107,7 @@ void vis::load_gl_functions(uti::ptr module)
 	LOAD_GL_FUNC(glUniform1i);
 	LOAD_GL_FUNC(glUniform4fv);
 	LOAD_GL_FUNC(glDeleteProgram);
-	LOAD_GL_FUNC(glActiveTexture);
+	//LOAD_GL_FUNC(glActiveTexture);
 	LOAD_GL_FUNC(glDeleteBuffers);
 
 	// OpenGL 3
