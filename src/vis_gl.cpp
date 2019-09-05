@@ -70,14 +70,14 @@ void vis::end_frame(renderer* renderer)
 {
 	assert(renderer != NULL);
 
-	uti::gel::swap_gl_buffers(renderer->hdc);
+	uti::gel::swap_gl_buffers(renderer->hdc, renderer->hwnd);
 }
 
 void vis::shutdown(renderer* renderer)
 {
 	assert(renderer != NULL);
 
-	uti::gel::destroy_gl_context(renderer->context);
+	uti::gel::destroy_gl_context(renderer->context, renderer->hwnd);
 }
 
 bool vis::create_compiled_vertex_shader( const char* shaderText, uti::u32* shader_id, uti::u32* errors_length )
