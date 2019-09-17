@@ -20,3 +20,4 @@ Vis.sdf
 tmp/x64/Debug/vis_gl.obj.enc
 *.o
 *.a
+build
