@@ -12,3 +12,4 @@ tmp/x64/Debug/vis_gl.obj.enc
 *.o
 *.a
 build
+tmp/x64/Debug/Vis.vcxproj.FileListAbsolute.txt

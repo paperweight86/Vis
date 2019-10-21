@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{91491C4B-0646-44C9-AFDA-C8CBA3DE0632}</ProjectGuid>
     <RootNamespace>Vis</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -56,7 +56,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>inc\;..\tat\inc\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>inc\;..\tat\inc\;gl\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>VIS_LIB;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4505;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -73,7 +73,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>inc\;..\tat\inc\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>inc\;..\tat\inc\;gl\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>VIS_LIB;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4505;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
