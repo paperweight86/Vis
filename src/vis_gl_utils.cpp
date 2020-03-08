@@ -73,68 +73,81 @@ void vis::draw_grid(float grid_size, u32 num_lines, u32 num_minor_lines)
 	glEnd();
 }
 
-void vis::draw_axis(bool arrows)
+void vis::draw_axis(bool arrows, float size)
 {
 	glBegin(GL_LINES);
 	glVertex3f(0.0, 0.0, 0.0);
-	glVertex3f(1.0, 0.0, 0.0);
+	glVertex3f(size, 0.0, 0.0);
 	glVertex3f(0.0, 0.0, 0.0);
-	glVertex3f(0.0, 1.0, 0.0);
+	glVertex3f(0.0, size, 0.0);
 	glVertex3f(0.0, 0.0, 0.0);
-	glVertex3f(0.0, 0.0, 1.0);
+	glVertex3f(0.0, 0.0, size);
 	glEnd();
 	if (arrows)
 	{
-		float arrow_size = 0.1f;
+		float arrow_size = 0.1f*size;
 
 		// X
 		glBegin(GL_LINE_STRIP);
-		glVertex3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(1.0f - arrow_size, arrow_size / 2.0f, arrow_size / 2.0f);
-		glVertex3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(1.0f - arrow_size, -arrow_size / 2.0f, arrow_size / 2.0f);
-		glVertex3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(1.0f - arrow_size, arrow_size / 2.0f, -arrow_size / 2.0f);
-		glVertex3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(1.0f - arrow_size, -arrow_size / 2.0f, -arrow_size / 2.0f);
-		glVertex3f(1.0f - arrow_size, -arrow_size / 2.0f, arrow_size / 2.0f);
-		glVertex3f(1.0f - arrow_size, arrow_size / 2.0f, arrow_size / 2.0f);
-		glVertex3f(1.0f - arrow_size, arrow_size / 2.0f, -arrow_size / 2.0f);
-		glVertex3f(1.0f - arrow_size, -arrow_size / 2.0f, -arrow_size / 2.0f);
+		glVertex3f(size, 0.0f, 0.0f);
+		glVertex3f(size - arrow_size, arrow_size / 2.0f, arrow_size / 2.0f);
+		glVertex3f(size, 0.0f, 0.0f);
+		glVertex3f(size - arrow_size, -arrow_size / 2.0f, arrow_size / 2.0f);
+		glVertex3f(size, 0.0f, 0.0f);
+		glVertex3f(size - arrow_size, arrow_size / 2.0f, -arrow_size / 2.0f);
+		glVertex3f(size, 0.0f, 0.0f);
+		glVertex3f(size - arrow_size, -arrow_size / 2.0f, -arrow_size / 2.0f);
+		glVertex3f(size - arrow_size, -arrow_size / 2.0f, arrow_size / 2.0f);
+		glVertex3f(size - arrow_size, arrow_size / 2.0f, arrow_size / 2.0f);
+		glVertex3f(size - arrow_size, arrow_size / 2.0f, -arrow_size / 2.0f);
+		glVertex3f(size - arrow_size, -arrow_size / 2.0f, -arrow_size / 2.0f);
 		glEnd();
 
 		//Y
 		glBegin(GL_LINE_STRIP);
-		glVertex3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(arrow_size / 2.0f, 1.0f - arrow_size, arrow_size / 2.0f);
-		glVertex3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(-arrow_size / 2.0f, 1.0f - arrow_size, arrow_size / 2.0f);
-		glVertex3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(arrow_size / 2.0f, 1.0f - arrow_size, -arrow_size / 2.0f);
-		glVertex3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(-arrow_size / 2.0f, 1.0f - arrow_size, -arrow_size / 2.0f);
-		glVertex3f(-arrow_size / 2.0f, 1.0f - arrow_size, arrow_size / 2.0f);
-		glVertex3f(arrow_size / 2.0f, 1.0f - arrow_size, arrow_size / 2.0f);
-		glVertex3f(arrow_size / 2.0f, 1.0f - arrow_size, -arrow_size / 2.0f);
-		glVertex3f(-arrow_size / 2.0f, 1.0f - arrow_size, -arrow_size / 2.0f);
+		glVertex3f(0.0f, size, 0.0f);
+		glVertex3f(arrow_size / 2.0f, size - arrow_size, arrow_size / 2.0f);
+		glVertex3f(0.0f, size, 0.0f);
+		glVertex3f(-arrow_size / 2.0f, size - arrow_size, arrow_size / 2.0f);
+		glVertex3f(0.0f, size, 0.0f);
+		glVertex3f(arrow_size / 2.0f, size - arrow_size, -arrow_size / 2.0f);
+		glVertex3f(0.0f, size, 0.0f);
+		glVertex3f(-arrow_size / 2.0f, size - arrow_size, -arrow_size / 2.0f);
+		glVertex3f(-arrow_size / 2.0f, size - arrow_size, arrow_size / 2.0f);
+		glVertex3f(arrow_size / 2.0f, size - arrow_size, arrow_size / 2.0f);
+		glVertex3f(arrow_size / 2.0f, size - arrow_size, -arrow_size / 2.0f);
+		glVertex3f(-arrow_size / 2.0f, size - arrow_size, -arrow_size / 2.0f);
 		glEnd();
 
 		//Z
 		glBegin(GL_LINE_STRIP);
-		glVertex3f(0.0f, 0.0f, 1.0f);
-		glVertex3f(arrow_size / 2.0f, arrow_size / 2.0f, 1.0f - arrow_size);
-		glVertex3f(0.0f, 0.0f, 1.0f);
-		glVertex3f(-arrow_size / 2.0f, arrow_size / 2.0f, 1.0f - arrow_size);
-		glVertex3f(0.0f, 0.0f, 1.0f);
-		glVertex3f(arrow_size / 2.0f, -arrow_size / 2.0f, 1.0f - arrow_size);
-		glVertex3f(0.0f, 0.0f, 1.0f);
-		glVertex3f(-arrow_size / 2.0f, -arrow_size / 2.0f, 1.0f - arrow_size);
-		glVertex3f(-arrow_size / 2.0f, arrow_size / 2.0f, 1.0f - arrow_size);
-		glVertex3f(arrow_size / 2.0f, arrow_size / 2.0f, 1.0f - arrow_size);
-		glVertex3f(arrow_size / 2.0f, -arrow_size / 2.0f, 1.0f - arrow_size);
-		glVertex3f(-arrow_size / 2.0f, -arrow_size / 2.0f, 1.0f - arrow_size);
+		glVertex3f(0.0f, 0.0f, size);
+		glVertex3f(arrow_size / 2.0f, arrow_size / 2.0f, size - arrow_size);
+		glVertex3f(0.0f, 0.0f, size);
+		glVertex3f(-arrow_size / 2.0f, arrow_size / 2.0f, size - arrow_size);
+		glVertex3f(0.0f, 0.0f, size);
+		glVertex3f(arrow_size / 2.0f, -arrow_size / 2.0f, size - arrow_size);
+		glVertex3f(0.0f, 0.0f, size);
+		glVertex3f(-arrow_size / 2.0f, -arrow_size / 2.0f, size - arrow_size);
+		glVertex3f(-arrow_size / 2.0f, arrow_size / 2.0f, size - arrow_size);
+		glVertex3f(arrow_size / 2.0f, arrow_size / 2.0f, size - arrow_size);
+		glVertex3f(arrow_size / 2.0f, -arrow_size / 2.0f, size - arrow_size);
+		glVertex3f(-arrow_size / 2.0f, -arrow_size / 2.0f, size - arrow_size);
 		glEnd();
 	}
+}
+
+void vis::draw_line(uti::float4& p0, uti::float4& p1)
+{
+	glLineWidth(5.0f);
+	glBegin(GL_LINES);
+	glVertex3f(uti::get_x(p0),
+		uti::get_y(p0),
+		uti::get_z(p0));
+	glVertex3f(uti::get_x(p1),
+		uti::get_y(p1),
+		uti::get_z(p1));
+	glEnd();
 }
 
 void vis::draw_normal(uti::float4& normal, uti::float4& position, float scale /*= 0.25f, bool arrow = true*/)

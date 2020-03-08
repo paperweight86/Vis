@@ -314,7 +314,7 @@ bool vis::load_shader_program(const char* vs_path, const char* ps_path, uti::u32
 	uti::u32 new_shader_program = u32_max;
 	uti::u32 shader_ids[] = { pixel_shader, vertex_shader };
 	uti::u32 shader_program_errors_len = 0;
-	if (!vis::create_linked_shader_program(shader_ids, uti::array_size(shader_ids), &new_shader_program, &shader_program_errors_len))
+	if (!vis::create_linked_shader_program(shader_ids, (uti::u32)uti::array_size(shader_ids), &new_shader_program, &shader_program_errors_len))
 	{
 		if(shader_program_errors_len > 0)
 		{
